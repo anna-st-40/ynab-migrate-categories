@@ -52,10 +52,3 @@ def category_groups_to_categories(category_groups:dict):
             categories[category[1]] = category[0]
 
     return categories
-
-# r = get_categories("4Lg1oavXLOGMeMh5vMjpWbwyYORJJ_QYo3BocCIIz7Y", "13dc7d71-a3d0-4818-a53f-7707d14a293b")
-
-# r = category_groups_to_categories(r)
-
-# # print(json.dumps(r, indent=2))
-# print(r)
