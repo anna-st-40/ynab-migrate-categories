@@ -64,10 +64,15 @@ def print_categories(budget_id: str, ynab_access_token: str):
     headers = {"Authorization": f"Bearer {ynab_access_token}"}
     response = requests.get(f"https://api.ynab.com/v1/budgets/{budget_id}/categories", headers=headers).json()
 
-    for group in response["data"]["category_groups"]:
-        print(group["name"])
-        for category in group["categories"]:
-            print(" "*4+category["name"]+" ||| "+category["id"])
+    if "error" in response:
+        print(response)
+
+    else:
+
+        for group in response["data"]["category_groups"]:
+            print(group["name"])
+            for category in group["categories"]:
+                print(" "*4+category["name"]+" ||| "+category["id"])
 
 
 def delete_all_transactions(budget_id: str, category_id: str, ynab_access_token: str):
@@ -136,4 +141,4 @@ def migrate_category(start_budget_id: str, start_category_id: str, end_budget_id
     if "error" in response_post:
         print(response_post)
     else:
-        print(f"Successfully copied {len(post_request_json["transactions"])} transactions. Transaction copies have been flagged {moved_flag_color}.")
+        print(f"Successfully copied {len(post_request_json['transactions'])} transactions. Transaction copies have been flagged {moved_flag_color}.")

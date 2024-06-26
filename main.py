@@ -1,49 +1,37 @@
 import json
-from funcs import print_transactions, print_categories, delete_all_transactions
+import requests
+from cli_interface import validate_budget_choice
+from funcs import print_categories
 
-
+# Get authentication
 with open("secrets.json", 'r') as file:
     secrets = json.load(file)
 
 YNAB_ACCESS_TOKEN = secrets["ynab_access_token"]
+headers = {"Authorization": f"Bearer {YNAB_ACCESS_TOKEN}"}
 
 
-# CLI loop
+print("Welcome to YNAB Category Migration.\n")
 
-while True:
+# Get budgets
+budget_response = requests.get(f"https://api.ynab.com/v1/budgets/", headers=headers).json()
+budgets = {n["id"]:n["name"] for n in budget_response["data"]["budgets"]}
 
-    print("1. Print all category groups and categories")
-    print("2. Print all transactions in a category")
-    print("3. Delete all transactions in a category")
-    print("4. Migrate all transactions from one category to another")
-    print()
-    choice = input("Enter your choice: ")
+# Choose starting budget
+print("Please select a budget to migrate FROM:")
+for i, n in enumerate(budgets.values()):
+    print(str(i+1)+". ", n)
 
-    if choice == "1":
-        print()
-        budget_id = input("Budget ID: ")
-        print()
-        print_categories(budget_id, YNAB_ACCESS_TOKEN)
+start_budget_id = validate_budget_choice(budgets)
 
-    elif choice == "2":
-        print()
-        budget_id = input("Budget ID: ")
-        category_id = input("Category ID: ")
-        print_transactions(budget_id, category_id, YNAB_ACCESS_TOKEN)
+# Choose ending budget
+print("Please select a budget to migrate TO:")
+for i, n in enumerate(budgets.values()):
+    print(str(i+1)+". ", n)
 
-    elif choice == "3":
-        print()
-        budget_id = input("Budget ID: ")
-        category_id = input("Category ID: ")
-        delete_all_transactions(budget_id, category_id, YNAB_ACCESS_TOKEN)
+end_budget_id = validate_budget_choice(budgets)
 
-    elif choice == "4":
-        print()
-        #TODO: Figure out a way to implement the account_map in the CLI
-        print("Sorry, can't actually use this through the CLI right now.")
-        # start_budget_id = input("Starting budget ID: ")
-        # start_category_id = input("Starting category ID: ")
-        # end_budget_id = input("Ending budget ID: ")
-        # end_category_id = input("Ending category ID: ")
+print(f"Migrating from {budgets[start_budget_id]} to {budgets[end_budget_id]}.")
 
-    print("--------------------------------------------")
+# # Display categories
+# print_categories(start_budget_id, YNAB_ACCESS_TOKEN)
