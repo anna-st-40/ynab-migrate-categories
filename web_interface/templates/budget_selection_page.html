@@ -1,0 +1,65 @@
+{% extends "base.html"  %}
+
+{%block content%}
+<div class="budget-selection">
+    <div class="budgets">
+
+        <div id="budget_select_start" class="budget-column">
+            <p class="label" for="budget_select_start">Select a budget to migrate from.</p>
+            {% for key, value in budgets.items() %}
+                <button type="button" class="budget-button" id="{{ key }}" onclick="selectButton(this, 'column1')">{{ value }}</button>
+            {% endfor %}
+        </div>
+
+        <div id="budget_select_end" class="budget-column">
+            <p class="label" for="budget_select_end">Select a budget to migrate to.</p>
+            {% for key, value in budgets.items() %}
+                <button type="button" class="budget-button" id="{{ key }}" onclick="selectButton(this, 'column2')">{{ value }}</button>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <p class="message" id="message"></p>
+    <div class="submit-container">
+        <button class="button" id="submit-btn" onclick="submitForm()">Proceed</button>
+    </div>
+
+    <!-- Hidden form to hold selected budget values -->
+    <form id="budgetForm" method="post" action="/submit-budgets">
+        <input type="hidden" name="start_budget" id="start_budget">
+        <input type="hidden" name="end_budget" id="end_budget">
+    </form>
+
+    <script>
+        let selectedButtons = { column1: null, column2: null };
+
+        function selectButton(button, columnId) {
+            // Deselect previously selected button in the same column
+            if (selectedButtons[columnId] !== null) {
+                selectedButtons[columnId].classList.remove('selected');
+            }
+            // Select the clicked button
+            selectedButtons[columnId] = button;
+            selectedButtons[columnId].classList.add('selected');
+
+            // Check if both columns have a selection to show submit button
+            checkSelection();
+        }
+
+        function checkSelection() {
+            if (selectedButtons.column1 !== null && selectedButtons.column2 !== null) {
+                document.getElementById('submit-btn').style.display = 'block';
+                document.getElementById('message').innerHTML = 'Migrating from ' + selectedButtons.column1.innerHTML + ' to ' + selectedButtons.column2.innerHTML;
+            } else {
+                document.getElementById('submit-btn').style.display = 'none';
+            }
+        }
+
+        function submitForm() {
+            document.getElementById('start_budget').value = selectedButtons.column1.id;
+            document.getElementById('end_budget').value = selectedButtons.column2.id;
+            document.getElementById('budgetForm').submit();
+        }
+    </script>
+</div>
+{%endblock%}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="category-selection">
+    {% for group_id, group_data in start_categories.items() %}
+    <div class="category-group">
+        <h3 class="group-label">{{ group_data.name }}</h3>
+        {% for category_id, category_name in group_data.categories.items() %}
+        <div class="category-single">
+            <p class="category-label">{{ category_name }}</p>
+            <select class="category-dropdown" name="{{ category_id }}">
+                <option value="None">Select target category</option>
+                {% for target_group_id, target_group_data in end_categories.items() %}
+                <optgroup label="{{ target_group_data.name }}">
+                    {% for target_category_id, target_category_name in target_group_data.categories.items() %}
+                    <option value="{{ target_category_id }}">{{ target_category_name }}</option>
+                    {% endfor %}
+                </optgroup>
+                {% endfor %}
+            </select>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>
+
+<form id="categoryForm" method="post" action="/submit-categories">
+    <div class="submit-container">
+        <input type="hidden" name="category-migrations" id="category-migrations">
+        <button type="submit" id="submit-catgs-btn" onclick="submitCategoryForm(event)">Continue</button>
+    </div>
+</form>
+
+<script>
+    function submitCategoryForm(event) {
+        event.preventDefault(); // Prevent the default form submission
+    
+        let categoryMigrations = {};
+        let dropdowns = document.querySelectorAll('.category-dropdown');
+    
+        dropdowns.forEach(function(dropdown) {
+            let categoryId = dropdown.getAttribute('name');
+            let selectedValue = dropdown.value;
+    
+            if (selectedValue !== 'None') {
+                categoryMigrations[categoryId] = selectedValue;
+            }
+        });
+    
+        let categoryMigrationsInput = document.getElementById('category-migrations');
+        categoryMigrationsInput.value = JSON.stringify(categoryMigrations);
+    
+        document.getElementById('categoryForm').submit(); // Submit the form
+    }
+</script>
+
+{% endblock %}

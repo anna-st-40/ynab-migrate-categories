@@ -1,0 +1,17 @@
+{% extends "base.html"  %}
+
+{%block content%}
+<div class="authentication">
+    <h2>Please set up your YNAB authentication.</h2>
+    <p>
+        In the current testing stage, we are using YNAB Personal Access Tokens. <br><br>
+        For more information on how to generate a Personal Access Token, please visit 
+        <a href="https://api.ynab.com/#:~:text=Sign%20in%20to%20the%20YNAB,to%20get%20an%20access%20token">the official YNAB website.</a>
+    </p>
+    <form action="/submit-token" method="post">
+        <label for="token">Personal Access Token:</label>
+        <input type="text" id="token" name="token"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{%endblock%}

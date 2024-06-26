@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+}
+.authentication {
+    text-align: center;
+}
+.budgets {
+    display: flex;
+    justify-content: center;
+}
+.budget-column {
+    display: inline-block;
+    text-align: center;
+    padding: 0 20px;
+    width: 50%;
+}
+.budget-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #3498db;
+    border-radius: 5px;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.budget-button:hover {
+    background-color: #256895;
+}
+.selected, .selected:hover {
+    background-color: black;
+}
+.message {
+    text-align: center;
+}
+.submit-container {
+    display: flex;
+    justify-content: center;
+}
+#submit-btn {
+    display: none;
+    padding: 10px 20px;
+    background-color: #2ecc71;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+#submit-btn:hover {
+    background-color: #1f8b4c;
+}
+.category-single {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 700px;
+}
+.category-dropdown {
+    flex: 1;
+    padding: 5px;
+    margin-left: 10px;
+    width: 20%;
+    height: 50%;
+}
+#submit-catgs-btn {
+    padding: 10px 20px;
+    background-color: #2ecc71;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
