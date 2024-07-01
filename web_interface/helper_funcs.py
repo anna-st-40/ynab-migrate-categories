@@ -11,16 +11,6 @@ def verify_ynab_access_token(token):
     else:
         return True
 
-def save_ynab_access_token(token, filepath):
-    if os.path.exists(filepath):
-        with open(filepath, "w+") as file:
-            file_dict = json.load(file)
-            file_dict['ynab_access_token'] = token
-            json.dump(file_dict, file)
-    else:
-        with open(filepath, "w") as file:
-            json.dump({"ynab_access_token": token}, file)
-
 def get_budgets(token):
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get(f"https://api.ynab.com/v1/budgets/", headers=headers).json()
@@ -43,12 +33,14 @@ def get_categories(token, budget_id):
                 d[group["id"]]["categories"][category["id"]] = category["name"]
     
         return d
+    
+def get_accounts(token, budget_id):
 
-def category_groups_to_categories(category_groups:dict):
-    categories = {}
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get(f"https://api.ynab.com/v1/budgets/{budget_id}/accounts", headers=headers).json()
 
-    for group in category_groups.values():
-        for category in group["categories"].items():
-            categories[category[1]] = category[0]
+    if "error" in response:
+        print(response)
 
-    return categories
+    else:
+        return {account['id']: account['name'] for account in response['data']['accounts']}

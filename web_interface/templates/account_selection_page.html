@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="account-selection">
+    {% for start_account_id, start_account_name in start_accounts.items() %}
+    <div class="account-single">
+        <p class="account-label">{{ start_account_name }}</p>
+        <select class="account-dropdown" name="{{ start_account_id }}">
+            <option value="None">Select target account</option>
+
+            {% for end_account_id, end_account_name in end_accounts.items() %}
+            <option value="{{ end_account_id }}">{{ end_account_name }}</option>
+            {% endfor %}
+
+        </select>
+    </div>
+    {% endfor %}
+</div>
+
+<form id="accountForm" method="post" action="/submit-accounts">
+    <div class="submit-container">
+        <input type="hidden" name="account-migrations" id="account-migrations">
+        <button type="submit" id="submit-accts-btn" onclick="submitAccountForm(event)">Continue</button>
+    </div>
+</form>
+
+<script>
+    function submitAccountForm(event) {
+        event.preventDefault(); // Prevent the form from submitting the traditional way
+        
+        // Create an empty object to store the account migrations
+        const accountMigrations = {};
+        
+        // Get all the dropdowns within the account-selection div
+        const dropdowns = document.querySelectorAll('.account-dropdown');
+        
+        dropdowns.forEach(dropdown => {
+            const startAccountId = dropdown.name;
+            const targetAccountId = dropdown.value;
+            
+            if (targetAccountId !== "None") {
+                accountMigrations[startAccountId] = targetAccountId;
+            }
+        });
+        
+        // Convert the accountMigrations object to a JSON string
+        const accountMigrationsJson = JSON.stringify(accountMigrations);
+        
+        // Set the value of the hidden input field to the JSON string
+        document.getElementById('account-migrations').value = accountMigrationsJson;
+        
+        // Submit the form
+        document.getElementById('accountForm').submit();
+    }
+</script>
+
+{% endblock %}
