@@ -36,20 +36,17 @@ def budget_selection():
 
 @app.route("/submit-budgets", methods=["POST"])
 def submit_budgets():
+    global start_budget
     start_budget = request.form["start_budget"]
+    global end_budget
     end_budget = request.form["end_budget"]
-    return redirect(url_for('category_selection', 
-                            start_budget=start_budget, 
-                            end_budget=end_budget))
+    return redirect(url_for('category_selection'))
 
 @app.route("/category-selection")
 def category_selection():
     if not YNAB_ACCESS_TOKEN:
         return redirect(url_for("authentication"))
     else:
-        start_budget = request.args.get("start_budget")
-        end_budget = request.args.get("end_budget")
-
         start_categories = get_categories(YNAB_ACCESS_TOKEN, start_budget)
         end_categories = get_categories(YNAB_ACCESS_TOKEN, end_budget)
         
@@ -63,3 +60,12 @@ def submit_categories():
     return migrations
 
 #TODO: Next steps: choose account counterparts & choose flag color
+#TODO: Use cookies instead of global variables
+
+@app.route("/account-selection")
+def account_selection():
+    pass
+
+@app.route("/submit-accounts", methods=["POST"])
+def submit_accounts():
+    pass
