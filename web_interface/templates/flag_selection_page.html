@@ -1,0 +1,100 @@
+{% extends "base.html"  %}
+
+{%block content%}
+<div class="flag-selection">
+    <ul class="flags-list">
+        <li>
+            <button aria-label="Red" class="ynab-flag-pill" type="button" onclick="selectButton(this)">
+                <span class="flag-pill-icon-container">
+                    <svg class="ynab-new-icon flag-pill-icon-red" width="16" height="10"></svg>
+                </span>
+                
+                <span class="label ">Red</span>
+
+            </button>
+        </li>
+
+        <li>
+            <button aria-label="Orange" class="ynab-flag-pill  " type="button" onclick="selectButton(this)">
+                <span class="flag-pill-icon-container">
+                    <svg class="ynab-new-icon flag-pill-icon-orange" width="16" height="10"></svg>
+                </span>
+      
+                <span class="label ">Orange</span>
+            </button>
+        </li>
+    
+        <li>
+            <button aria-label="Yellow" class="ynab-flag-pill  " type="button" onclick="selectButton(this)">
+                <span class="flag-pill-icon-container">
+                    <svg class="ynab-new-icon flag-pill-icon-yellow" width="16" height="10"></svg>
+                </span>
+      
+                <span class="label ">Yellow</span>
+            </button>
+        </li>
+
+        <li>
+            <button aria-label="Green" class="ynab-flag-pill  " type="button" onclick="selectButton(this)">
+                <span class="flag-pill-icon-container">
+                    <svg class="ynab-new-icon flag-pill-icon-green" width="16" height="10"></svg>
+                </span>
+      
+                <span class="label ">Green</span>
+            </button>
+        </li>
+    
+        <li>
+            <button aria-label="Blue" class="ynab-flag-pill  " type="button" onclick="selectButton(this)">
+                <span class="flag-pill-icon-container">
+                    <svg class="ynab-new-icon flag-pill-icon-blue" width="16" height="10"></svg>
+                </span>
+      
+                <span class="label ">Blue</span>
+            </button>
+        </li>
+
+        <li>
+            <button aria-label="Purple" class="ynab-flag-pill  " type="button" onclick="selectButton(this)">
+                <span class="flag-pill-icon-container">
+                    <svg class="ynab-new-icon flag-pill-icon-purple" width="16" height="10"></svg>
+                </span>
+                
+                <span class="label ">Purple</span>
+            </button>
+  
+        </li>
+
+    </ul>
+</div>
+
+<div class="submit-container">
+    <button class="submit-button" id="flag-submit-btn" onclick="submitForm()">Proceed</button>
+</div>
+
+<!-- Hidden form to hold selected budget values -->
+<form id="flagForm" method="post" action="/submit-flags">
+    <input type="hidden" name="flags" id="flags">
+</form>
+
+<script>
+    let selectedButton = null;
+
+    function selectButton(button) {
+        // Deselect previously selected button in the same column
+        if (selectedButton !== null) {
+            selectedButton.classList.remove('selected');
+        }
+        // Select the clicked button
+        selectedButton = button;
+        selectedButton.classList.add('selected');
+
+    }
+
+    function submitForm() {
+        document.getElementById('flags').value = selectedButton.getAttribute("aria-label");
+        document.getElementById('flagForm').submit();
+    }
+</script>
+
+{%endblock%}

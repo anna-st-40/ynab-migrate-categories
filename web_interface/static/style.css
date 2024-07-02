@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    padding: 20px;
+    /* background-color: #f0f0f0; */
+    /* padding: 20px; */
 }
 h1 {
     text-align: center;
@@ -52,9 +52,6 @@ h1 {
     border: none;
     cursor: pointer;
 }
-#submit-btn:hover {
-    background-color: #1f8b4c;
-}
 .category-single,
 .account-single {
     display: flex;
@@ -70,12 +67,58 @@ h1 {
     width: 20%;
     height: 50%;
 }
-#submit-catgs-btn,
-#submit-accts-btn {
+.submit-button {
     padding: 10px 20px;
     background-color: #2ecc71;
     color: white;
     border-radius: 5px;
     border: none;
     cursor: pointer;
+}
+.submit-button:hover {
+    background-color: #1f8b4c;
+}
+.flags-list li {
+    list-style: none;
+}
+.ynab-flag-pill {
+    color: #405163;
+    background-color: white;
+    align-items: center;
+    border-radius: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 0.25rem .5rem;
+    margin: .5rem;
+    border: .0625rem solid #D2D8DE;
+    width: fit-content;
+}
+.ynab-flag-pill:hover {
+    background-color: #EDF1F5;
+}
+.ynab-flag-pill.selected {
+    background-color: #c6cacf;
+}
+.flag-pill-icon-container {
+    padding: 0 .25rem;
+}
+.flag-pill-icon-red {
+    background-color: #FF3B30;
+}
+.flag-pill-icon-orange {
+    background-color: #FF9500;
+}
+.flag-pill-icon-yellow {
+    background-color: #FFCC00;
+}
+.flag-pill-icon-green {
+    background-color: #34C759;
+}
+.flag-pill-icon-blue {
+    background-color: #5AC8FA;
+}
+.flag-pill-icon-purple {
+    background-color: #AF52DE;
 }

@@ -2,92 +2,83 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../static/style.css">
     <title>Select Buttons Example</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-        .button-column {
-            float: left;
-            width: 45%;
-            margin-right: 5%;
-        }
-        .button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        .selected {
-            background-color: #e74c3c;
-        }
-        .clearfix::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
-        #submit-btn {
-            display: none;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
-    <h2>Select One Button from Each Column:</h2>
-    <div class="button-column" id="column1">
-        <button type="button" class="button" onclick="selectButton(this, 'column1')">Button 1 (Column 1)</button>
-        <button type="button" class="button" onclick="selectButton(this, 'column1')">Button 2 (Column 1)</button>
-        <button type="button" class="button" onclick="selectButton(this, 'column1')">Button 3 (Column 1)</button>
+
+    <div class="flag-selection">
+        <ul class="flags-list">
+            <li>
+                <button aria-label="Red" class="ynab-flag-pill" type="button">
+                    <span class="flag-pill-icon-container">
+                        <svg class="ynab-new-icon flag-pill-icon-red" width="16" height="10">
+                        </svg>
+                    </span>
+                    
+                    <span class="label ">Red</span>
+
+                </button>
+            </li>
+
+            <li>
+                <button aria-label="Orange" class="ynab-flag-pill  " type="button">
+                    <span class="flag-pill-icon-container">
+                        <svg class="ynab-new-icon flag-pill-icon-orange" width="16" height="10">
+                        </svg>
+                    </span>
+          
+                    <span class="label ">Orange</span>
+                </button>
+            </li>
+        
+            <li>
+                <button aria-label="Yellow" class="ynab-flag-pill  " type="button">
+                    <span class="flag-pill-icon-container">
+                        <svg class="ynab-new-icon flag-pill-icon-yellow" width="16" height="10">
+                        </svg>
+                    </span>
+          
+                    <span class="label ">Yellow</span>
+                </button>
+            </li>
+
+            <li>
+                <button aria-label="Green" class="ynab-flag-pill  " type="button">
+                    <span class="flag-pill-icon-container">
+                        <svg class="ynab-new-icon flag-pill-icon-green" width="16" height="10">
+                        </svg>
+                    </span>
+          
+                    <span class="label ">Green</span>
+                </button>
+            </li>
+        
+            <li>
+                <button aria-label="Blue" class="ynab-flag-pill  " type="button">
+                    <span class="flag-pill-icon-container">
+                        <svg class="ynab-new-icon flag-pill-icon-blue" width="16" height="10">
+                        </svg>
+                    </span>
+          
+                    <span class="label ">Blue</span>
+                </button>
+            </li>
+
+            <li>
+                <button aria-label="Purple" class="ynab-flag-pill  " type="button">
+                    <span class="flag-pill-icon-container">
+                        <svg class="ynab-new-icon flag-pill-icon-purple" width="16" height="10">
+                        </svg>
+                    </span>
+                    
+                    <span class="label ">Purple</span>
+                </button>
+      
+            </li>
+
+        </ul>
     </div>
-    <div class="button-column" id="column2">
-        <button type="button" class="button" onclick="selectButton(this, 'column2')">Button 4 (Column 2)</button>
-        <button type="button" class="button" onclick="selectButton(this, 'column2')">Button 5 (Column 2)</button>
-        <button type="button" class="button" onclick="selectButton(this, 'column2')">Button 6 (Column 2)</button>
-    </div>
-    <div class="clearfix"></div>
-    <button id="submit-btn" onclick="submitForm()">Submit</button>
 
-    <script>
-        let selectedButtons = { column1: null, column2: null };
-
-        function selectButton(button, columnId) {
-            // Deselect previously selected button in the same column
-            if (selectedButtons[columnId] !== null) {
-                selectedButtons[columnId].classList.remove('selected');
-            }
-            // Select the clicked button
-            selectedButtons[columnId] = button;
-            selectedButtons[columnId].classList.add('selected');
-
-            // Check if both columns have a selection to show submit button
-            checkSelection();
-        }
-
-        function checkSelection() {
-            if (selectedButtons.column1 !== null && selectedButtons.column2 !== null) {
-                document.getElementById('submit-btn').style.display = 'block';
-            } else {
-                document.getElementById('submit-btn').style.display = 'none';
-            }
-        }
-
-        function submitForm() {
-            const selection1 = selectedButtons.column1.textContent.trim();
-            const selection2 = selectedButtons.column2.textContent.trim();
-            alert(`Selected Buttons: ${selection1}, ${selection2}`);
-            // Additional form submission logic can be added here
-        }
-    </script>
 </body>
 </html>

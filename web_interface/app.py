@@ -74,7 +74,28 @@ def submit_accounts():
     global account_migrations
     account_migrations = request.form["account-migrations"]
 
-    return account_migrations
+    return redirect(url_for("flag_selection"))
 
-#TODO: Next steps: choose flag color
+@app.route("/flag-selection")
+def flag_selection():
+    return render_template("flag_selection_page.html")
+
+@app.route("/submit-flags", methods=["POST"])
+def submit_flags():
+    global flag
+    flag = request.form["flags"]
+
+    return redirect(url_for("final_confirmation"))
+
+@app.route("/final-confirmation")
+def final_confirmation():
+    return {
+        "start_budget": start_budget,
+        "end_budget": end_budget,
+        "category_migrations": category_migrations,
+        "account_migrations": account_migrations,
+        "flag": flag
+    }
+
 #TODO: Use cookies instead of global variables
+#TODO: Next step: Final confirmation and actual migration
