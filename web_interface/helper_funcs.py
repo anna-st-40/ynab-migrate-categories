@@ -1,5 +1,3 @@
-import os
-import json
 import requests
 
 def verify_ynab_access_token(token):
@@ -15,7 +13,6 @@ def get_budgets(token):
     headers = {"Authorization": f"Bearer {token}"}
     response = requests.get(f"https://api.ynab.com/v1/budgets/", headers=headers).json()
     return {n["id"]:n["name"] for n in response["data"]["budgets"]}
-
 
 def get_categories(token, budget_id):
 
@@ -44,3 +41,13 @@ def get_accounts(token, budget_id):
 
     else:
         return {account['id']: account['name'] for account in response['data']['accounts']}
+    
+def get_transactions(token, budget_id, category_id):
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get(f"https://api.ynab.com/v1/budgets/{budget_id}/categories/{category_id}/transactions", headers=headers).json()
+    return response["data"]["transactions"]
+
+def post_transactions(token, budget_id, transactions:dict):
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.post(f"https://api.ynab.com/v1/budgets/{budget_id}/transactions", headers=headers, json=transactions)
+    return response.json()

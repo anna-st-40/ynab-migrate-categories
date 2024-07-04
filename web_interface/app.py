@@ -1,5 +1,5 @@
 from flask import Flask, request, session, redirect, render_template, url_for
-import requests
+import json
 
 from helper_funcs import *
 
@@ -57,7 +57,7 @@ def category_selection():
 @app.route("/submit-categories", methods=["POST"])
 def submit_categories():
     global category_migrations
-    category_migrations = request.form["category-migrations"]
+    category_migrations = json.loads(request.form["category-migrations"])
     return redirect(url_for('account_selection'))
 
 @app.route("/account-selection")
@@ -72,7 +72,7 @@ def account_selection():
 @app.route("/submit-accounts", methods=["POST"])
 def submit_accounts():
     global account_migrations
-    account_migrations = request.form["account-migrations"]
+    account_migrations = json.loads(request.form["account-migrations"])
 
     return redirect(url_for("flag_selection"))
 
@@ -83,19 +83,42 @@ def flag_selection():
 @app.route("/submit-flags", methods=["POST"])
 def submit_flags():
     global flag
-    flag = request.form["flags"]
+    flag = request.form["flags"].lower()
 
-    return redirect(url_for("final_confirmation"))
+    return redirect(url_for("final_migration"))
 
-@app.route("/final-confirmation")
-def final_confirmation():
-    return {
-        "start_budget": start_budget,
-        "end_budget": end_budget,
-        "category_migrations": category_migrations,
-        "account_migrations": account_migrations,
-        "flag": flag
-    }
+@app.route("/final-migration")
+def final_migration():
+    transactions_body = {"transactions": [],}
+    
+    i = 0
+    for start_category, end_category in category_migrations.items():
+        transactions = get_transactions(YNAB_ACCESS_TOKEN, start_budget, start_category)
+        for t in transactions:
+            transactions_body["transactions"].append(
+                {
+                    "account_id": account_migrations[t["account_id"]],
+                    "date": t["date"],
+                    "amount": t["amount"],
+                    "payee_id": t["payee_id"],
+                    "payee_name": t["payee_name"],
+                    "category_id": end_category,
+                    "memo": t["memo"],
+                    "cleared": t["cleared"],
+                    "approved": t["approved"],
+                    "flag_color": flag
+                }
+            )
+
+            if "subtransactions" in t:
+                transactions_body["transactions"][i]["subtransactions"] = t["subtransactions"]
+        i += 1
+
+    post_transactions(YNAB_ACCESS_TOKEN, end_budget, transactions_body)
+
+    return render_template("success_page.html")
+
 
 #TODO: Use cookies instead of global variables
-#TODO: Next step: Final confirmation and actual migration
+#TODO: Add category groups to display of categories in selection
+#TODO: Add a note to all the memos
